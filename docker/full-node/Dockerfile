@@ -12,7 +12,9 @@ RUN wget https://github.com/hyphacoop/testnets/raw/add-theta-testnet/v7-theta/pu
 FROM alpine:3.15.6
 COPY --from=gaia-builder /go/bin/gaiad /usr/bin/
 COPY --from=genesis-builder genesis.json $HOME/.gaia/config/
-COPY src/config.sh .
-COPY src/bootstrap-node.sh .
+COPY src/config.sh /bin/
+COPY src/launch-full-node.sh /bin/
+RUN ["chmod", "+x", "/bin/launch-full-node.sh"]
+ENTRYPOINT ["sh","/bin/launch-full-node.sh"]
 EXPOSE 26656
 EXPOSE 26657
