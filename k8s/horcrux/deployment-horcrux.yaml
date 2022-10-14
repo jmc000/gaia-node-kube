@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: horcrux
+  namespace: gaia
+  labels:
+    app: horcrux
+spec:
+  selector:
+    matchLabels:
+      app: horcrux
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: horcrux
+    spec:
+      volumes:
+        - name: gaia-config
+          persistentVolumeClaim:
+            claimName: pvc-node
+      containers:
+        - name: gaia
+          image: "jeremymc99/gaia:horcrux-1.0"
+          imagePullPolicy: Always #IfNotPresent
+          volumeMounts:
+            - name: gaia-config
+              mountPath: /root/.gaia/
+          ports:
+            - name: horcrux
+              containerPort: 2222
+              protocol: TCP
