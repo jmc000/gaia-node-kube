@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: restart-node
+  namespace: gaia
+spec:
+  template:
+    metadata:
+      name: restart-node
+    spec:
+      serviceAccountName: internal-kubectl
+      initContainers:
+      - name: modify-node-config-for-horcrux
+        image: bitnami/kubectl:1.24.6
+        command:
+         - "bin/bash"
+         - "-c"
+         - "kubectl exec -i $(kubectl get pods --no-headers=true -l app=gaia | awk '{print $1}') -- sh update-node-config-for-horcrux.sh"
+      containers:
+      - name: restart-node
+        image: bitnami/kubectl:1.24.6
+        command:
+         - "bin/bash"
+         - "-c"
+         - "kubectl delete po $(kubectl get pods --no-headers=true -l app=gaia | awk '{print $1}')"
+      restartPolicy: OnFailure

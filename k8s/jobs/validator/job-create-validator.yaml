@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-validator
+  namespace: gaia
+spec:
+  template:
+    metadata:
+      name: create-validator
+    spec:
+      serviceAccountName: internal-kubectl
+      containers:
+      - name: create-validator
+        image: bitnami/kubectl:1.24.6
+        command:
+         - "bin/bash"
+         - "-c"
+         - "kubectl exec -i $(kubectl get pods --no-headers=true -l app=gaia | awk '{print $1}') -- sh create-validator.sh"
+      restartPolicy: OnFailure
