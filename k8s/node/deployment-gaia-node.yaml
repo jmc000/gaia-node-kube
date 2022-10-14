@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gaia-node
+  namespace: gaia
+  labels:
+    app: gaia
+spec:
+  selector:
+    matchLabels:
+      app: gaia
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gaia
+    spec:
+      volumes:
+        - name: gaia-config
+          persistentVolumeClaim:
+            claimName: pvc-node
+        - name: encrypted-private-key
+          secret:
+            secretName: priv-key
+      containers:
+        - name: gaia
+          image: "jeremymc99/gaia:2.0-full-node"
+          imagePullPolicy: Always #IfNotPresent
+          volumeMounts:
+            - name: gaia-config
+              mountPath: /root/.gaia/
+            - name: encrypted-private-key
+              mountPath: "/keys/"
+          ports:
+            - name: gaia-node
+              containerPort: 26657
+              protocol: TCP
