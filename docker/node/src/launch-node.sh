@@ -26,7 +26,8 @@ $BINARY config broadcast-mode block --home $NODE_HOME
 $BINARY init $NODE_MONIKER --home $NODE_HOME --chain-id=$CHAIN_ID
 
 sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.001uatom"/' $NODE_HOME/config/app.toml
-sed -i 's/persistent_peers = ""/persistent_peers = "639d50339d7045436c756a042906b9a69970913f@seed-01.theta-testnet.polypore.xyz:26656,3e506472683ceb7ed75c1578d092c79785c27857@seed-02.theta-testnet.polypore.xyz:26656"/' $NODE_HOME/config/config.toml
+sed -i 's/persistent_peers = ""/persistent_peers = "4529d6cbc6e4a9cecadfbf9b6f86d0584199218e@46.101.135.137:26656,639d50339d7045436c756a042906b9a69970913f@seed-01.theta-testnet.polypore.xyz:26656,3e506472683ceb7ed75c1578d092c79785c27857@seed-02.theta-testnet.polypore.xyz:26656"/' $NODE_HOME/config/config.toml
+sed -i 's/laddr = ""/laddr = "tcp://gaia-full-node-svc.gaia:26657"/' $NODE_HOME/config/config.toml
 
 if $STATE_SYNC; then
     echo "enabling state sync..."
@@ -37,6 +38,12 @@ if $STATE_SYNC; then
 else
     echo "disabling state sync..."
 fi
+
+##### IMPORTING PRIV KEY ###
+
+echo "***********************"
+echo "importing private key..."
+echo $password | gaiad keys import jmc /keys/pkey # CHANGE THAT
 
 ##### STARTING SERVICE DEAMON ###
 

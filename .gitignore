@@ -9,3 +9,8 @@ override.tf.json
 #Local config
 .local-config
 .idea
+/notes
+
+#private validator file
+docker/kms/src/priv_validator.json
+docker/node/src/config.sh

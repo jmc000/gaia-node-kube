@@ -12,9 +12,14 @@ RUN wget https://github.com/hyphacoop/testnets/raw/add-theta-testnet/v7-theta/pu
 FROM alpine:3.15.6
 COPY --from=gaia-builder /go/bin/gaiad /usr/bin/
 COPY --from=genesis-builder genesis.json $HOME/.gaia/config/
-COPY src/config.sh /bin/
-COPY src/launch-full-node.sh /bin/
-RUN ["chmod", "+x", "/bin/launch-full-node.sh"]
-ENTRYPOINT ["sh","/bin/launch-full-node.sh"]
+COPY src/config.sh .
+COPY src/launch-node.sh .
+COPY src/create-validator.sh .
+COPY src/update-node-config-for-horcrux.sh .
+RUN ["chmod", "+x", "./launch-node.sh"]
+RUN ["chmod", "+x", "./create-validator.sh"]
+RUN ["chmod", "+x", "./update-node-config-for-horcrux.sh"]
+CMD ["/bin/sh", "./launch-node.sh"]
 EXPOSE 26656
 EXPOSE 26657
+EXPOSE 1234
