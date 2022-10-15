@@ -1,4 +1,4 @@
-FROM ubuntu:22.10 as builder
+FROM ubuntu:22.10
 RUN apt-get update && apt-get install wget -y && rm -rf /var/lib/apt/lists/*
 RUN wget https://github.com/strangelove-ventures/horcrux/releases/download/v2.0.0/horcrux_2.0.0_linux_amd64.tar.gz; \
     tar -xzf horcrux_2.0.0_linux_amd64.tar.gz

@@ -36,3 +36,13 @@ spec:
             - name: gaia-node
               containerPort: 26657
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: gaia-node
+            initialDelaySeconds: 180
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: gaia-node
+            initialDelaySeconds: 200
