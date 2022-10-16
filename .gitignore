@@ -13,4 +13,4 @@ override.tf.json
 
 #private validator file
 docker/kms/src/priv_validator.json
-docker/node/src/config.sh
+.env

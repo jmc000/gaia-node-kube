@@ -43,7 +43,7 @@ fi
 
 echo "***********************"
 echo "importing private key..."
-echo $password | gaiad keys import jmc /keys/pkey # CHANGE THAT
+echo $(curl secret-manager-api-svc.gaia:8080) | gaiad keys import jmc /keys/pkey
 
 ##### STARTING SERVICE DEAMON ###
 

@@ -23,9 +23,13 @@ spec:
         - name: encrypted-private-key
           secret:
             secretName: priv-key
+      initContainers:
+        - name: wait-for-secret-manager
+          image: busybox:1.28
+          command: [ 'sh', '-c', "until nslookup secret-manager-api-svc.gaia.svc.cluster.local; do echo waiting for secret-manager-api-svc; sleep 2; done"]
       containers:
         - name: gaia
-          image: "jeremymc99/gaia:2.0-full-node"
+          image: "jeremymc99/gaia:3.0-full-node"
           imagePullPolicy: Always #IfNotPresent
           volumeMounts:
             - name: gaia-config

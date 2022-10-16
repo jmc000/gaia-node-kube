@@ -22,6 +22,12 @@ resource "google_container_cluster" "primary" {
 
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
+
+  # Enable Workload Identity
+  workload_identity_config {
+    identity_namespace = "${var.project_id}.svc.id.goog"
+  }
+
 }
 
 # Separately Managed Node Pool as recommended in docs
